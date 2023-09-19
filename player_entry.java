@@ -13,13 +13,15 @@ import java.sql.SQLException;
 public class PlayerEntryScreen extends JFrame {
     private JTextField idField;
     private JTextField userField;
-    private JTable playerTable;
-    private DefaultTableModel tableModel;
-
+    private JTable team1Table;
+    private DefaultTableModel team1TableModel;
+    private JTable team2Table;
+    private DefaultTableModel team2TableModel;
+    
     public PlayerEntryScreen() {
         setTitle("EntryTerminal");
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        setSize(600, 700);
+        setSize(1000, 700);
 
         //set up main panel 
         JPanel mainPanel = new JPanel(new BorderLayout());
@@ -30,28 +32,30 @@ public class PlayerEntryScreen extends JFrame {
         //add input panel components
         JLabel idLabel = new JLabel("ID: ");
         idField = new JTextField();
-        //JLabel userLabel = new JLabel("Username: ");
-        //userField = new JTextField();
-
         inputPanel.add(idLabel);
         inputPanel.add(idField);
-        //inputPanel.add(userLabel);
-        //inputPanel.add(userField);
         
         //set up button(s)
         JButton addButton = new JButton("Add Player");
-
         inputPanel.add(addButton);
                 
         //set up table
-        tableModel = new DefaultTableModel();
-        tableModel.addColumn("ID");
-        tableModel.addColumn("Username");
-        playerTable = new JTable(tableModel);
+        team1TableModel = new DefaultTableModel();
+        team1TableModel.addColumn("ID");
+        team1TableModel.addColumn("Username");
+        team1Table = new JTable(team1TableModel);
+
+        team2TableModel = new DefaultTableModel();
+        team2TableModel.addColumn("ID");
+        team2TableModel.addColumn("Username");
+        team2Table = new JTable(team2TableModel);
                 
+        //create two table display
+        JSplitPane splitPane = new JSplitPane(JSplitPane.HORIZONTAL_SPLIT, new JScrollPane(team1Table), new JScrollPane(team2Table));
+        
         //add components to main panel
         mainPanel.add(inputPanel, BorderLayout.NORTH);
-        mainPanel.add(new JScrollPane(playerTable), BorderLayout.CENTER);
+        mainPanel.add(splitPane, BorderLayout.CENTER);
             
         addButton.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
@@ -86,6 +90,14 @@ public class PlayerEntryScreen extends JFrame {
     					return;
     				}	
     			}
+    	//chose team: even players = team 1, odd players = team 2
+    	DefaultTableModel tableModel;
+    	if(id_in % 2 == 0) {
+    		tableModel = team1TableModel;
+    	}
+    	else {
+    		tableModel = team2TableModel;
+    	}
     	
     	//add player to table
     	Vector<String> playerInput = new Vector<>();
@@ -107,7 +119,7 @@ public class PlayerEntryScreen extends JFrame {
     		Connection connection = DriverManager.getConnection("db_url", "your username", "your password");
     		
     		//search statement for ID
-    		String sql = "SELECT username FROM players WHERE if = ?";
+    		String sql = "SELECT username FROM players WHERE id = ?";
     		PreparedStatement preparedStatement = connection.prepareStatement(sql);
     		preparedStatement.setInt(1,id_search);
     		
