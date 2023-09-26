@@ -182,6 +182,15 @@ public class Main extends JFrame {
     public static void main(String[] args) {
         SwingUtilities.invokeLater(new Runnable() {
             public void run() {
+                SplashScreen splashScreen = new SplashScreen(1500, 1000);
+                splashScreen.showSplashScreen();
+                try {
+                    Thread.sleep(3000); // Simulating a delay of 3 seconds
+                    splashScreen.hideSplashScreen();
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
+                    System.exit(1);
+                }
                 new Main().setVisible(true);
             }
         });
