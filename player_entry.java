@@ -170,6 +170,15 @@ public class PlayerEntryScreen extends JFrame {
     public static void main(String[] args) {
         SwingUtilities.invokeLater(new Runnable() {
             public void run() {
+                splashScreen splashScreen = new SplashScreen(1500, 1000);
+                splashScreen.showSplashScreen();
+                try {
+                    Thread.sleep(3000); // Simulating a delay of 3 seconds
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
+                    System.exit(1);
+                }
+                //splashScreen.hideSplashScreen();
                 new PlayerEntryScreen().setVisible(true);
             }
         });
