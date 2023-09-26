@@ -178,7 +178,7 @@ public class PlayerEntryScreen extends JFrame {
                     e.printStackTrace();
                     System.exit(1);
                 }
-                //splashScreen.hideSplashScreen();
+                splashScreen.hideSplashScreen();
                 new PlayerEntryScreen().setVisible(true);
             }
         });
