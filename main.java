@@ -10,7 +10,7 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 
-public class PlayerEntryScreen extends JFrame {
+public class Main extends JFrame {
     private JTextField idField;
     private JTextField userField;
     private JTable team1Table;
@@ -18,7 +18,7 @@ public class PlayerEntryScreen extends JFrame {
     private JTable team2Table;
     private DefaultTableModel team2TableModel;
     
-    public PlayerEntryScreen() {
+    public Main() {
         setTitle("EntryTerminal");
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         setSize(1000, 700);
@@ -38,6 +38,9 @@ public class PlayerEntryScreen extends JFrame {
         //set up button(s)
         JButton addButton = new JButton("Add Player");
         inputPanel.add(addButton);
+        
+        //ADD BUTTON TO CLEAR ALL ENTRIES
+        //ADD BUTTON TO MOVE TO PLAY SCREEN AFTER COMPLETING PLAYER ENTRY
                 
         //set up table
         team1TableModel = new DefaultTableModel();
@@ -70,10 +73,14 @@ public class PlayerEntryScreen extends JFrame {
         setLocationRelativeTo(null);
     }
     
+    //METHOD TO PROMPT FOR EQUIPMENT CODE
+    public void getEqID() {
+    	String EqID = JOptionPane.showInputDialog("Enter your equipment ID");
+    }
+    
     //Implement addPlayer method 
     public void addPlayer(int id_in, String user_in) {
-    	//String user_in = "";
-    	
+
     	//implement logic to search database
     	String DB_user = searchDatabase(id_in);
     	
@@ -90,6 +97,9 @@ public class PlayerEntryScreen extends JFrame {
     					return;
     				}	
     			}
+    	//get equipment ID
+    	getEqID();
+    	
     	//chose team: even players = team 1, odd players = team 2
     	DefaultTableModel tableModel;
     	if(id_in % 2 == 0) {
@@ -109,6 +119,8 @@ public class PlayerEntryScreen extends JFrame {
     	idField.setText("");
     	userField.setText("");
     }
+    
+    //FUNCTION TO PROMPT FOR EQUIPTMENT ID
     
     //searchDB for username by ID
     private String searchDatabase(int id_search) {
@@ -146,7 +158,7 @@ public class PlayerEntryScreen extends JFrame {
     private void updateDatabase(int id_enter, String username_enter) {
     	try {
     		//connect to DB
-    		Connection connection = DriverManager.getConnection("db_url", "your username", "your password");
+    		Connection connection = DriverManager.getConnection("jdbc:postgresql://db.jftodibnhiuinhcketaf.supabase.co/postgres?user=postgres&password=jd4_2kAmcde3451&ssl=false");
     		
     		//statement to update username
     		String sql = "UPDATE players SET username = ? WHERE id = ?'";
@@ -170,16 +182,7 @@ public class PlayerEntryScreen extends JFrame {
     public static void main(String[] args) {
         SwingUtilities.invokeLater(new Runnable() {
             public void run() {
-                splashScreen splashScreen = new SplashScreen(1500, 1000);
-                splashScreen.showSplashScreen();
-                try {
-                    Thread.sleep(3000); // Simulating a delay of 3 seconds
-                } catch (InterruptedException e) {
-                    e.printStackTrace();
-                    System.exit(1);
-                }
-                splashScreen.hideSplashScreen();
-                new PlayerEntryScreen().setVisible(true);
+                new Main().setVisible(true);
             }
         });
     }
