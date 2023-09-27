@@ -17,6 +17,7 @@ public class Main extends JFrame {
     private DefaultTableModel team1TableModel;
     private JTable team2Table;
     private DefaultTableModel team2TableModel;
+    UdpClient cl = new UdpClient();
     
     public Main() {
         setTitle("EntryTerminal");
@@ -75,7 +76,9 @@ public class Main extends JFrame {
     
     //METHOD TO PROMPT FOR EQUIPMENT CODE
     public void getEqID() {
-    	String EqID = JOptionPane.showInputDialog("Enter your equipment ID");
+        String eqId = JOptionPane.showInputDialog("Enter your equipment ID");
+        int eqIdInt = Integer.parseInt(eqId);
+        cl.sendDataToServer(eqIdInt);
     }
     
     //Implement addPlayer method 
