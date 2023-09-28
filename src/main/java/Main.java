@@ -18,7 +18,8 @@ public class Main extends JFrame {
     private JTable team2Table;
     private DefaultTableModel team2TableModel;
     UdpClient cl = new UdpClient();
-    
+    String dbConnectionUrl = "jdbc:postgresql://db.jftodibnhiuinhcketaf.supabase.co/postgres?user=postgres&password=jd4_2kAmcde3451&ssl=false";
+
     public Main() {
         setTitle("EntryTerminal");
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -170,7 +171,7 @@ public class Main extends JFrame {
     	
     	try {
     		//connect to DB
-    		Connection connection = DriverManager.getConnection("db_url", "your username", "your password");
+    		Connection connection = DriverManager.getConnection(dbConnectionUrl);
     		
     		//search statement for ID
     		String sql = "SELECT username FROM players WHERE id = ?";
@@ -200,7 +201,7 @@ public class Main extends JFrame {
     private void updateDatabase(int id_enter, String username_enter) {
     	try {
     		//connect to DB
-    		Connection connection = DriverManager.getConnection("jdbc:postgresql://db.jftodibnhiuinhcketaf.supabase.co/postgres?user=postgres&password=jd4_2kAmcde3451&ssl=false");
+    		Connection connection = DriverManager.getConnection(dbConnectionUrl);
     		
     		//statement to update username
     		String sql = "UPDATE players SET username = ? WHERE id = ?'";
