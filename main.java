@@ -72,7 +72,36 @@ public class Main extends JFrame {
         //add main panel to frame & center
         add(mainPanel);
         setLocationRelativeTo(null);
+        
+        // Add Key Bindings
+        InputMap inputMap = mainPanel.getInputMap(JComponent.WHEN_IN_FOCUSED_WINDOW);
+        ActionMap actionMap = mainPanel.getActionMap();
+
+        // F12 Key Binding to Clear All Entries
+        inputMap.put(KeyStroke.getKeyStroke("F12"), "clearEntries");
+        actionMap.put("clearEntries", new AbstractAction() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                clearAllEntries();
+            }
+        });
+
+        // F5 Key Binding to Exit
+        inputMap.put(KeyStroke.getKeyStroke("F5"), "exitProgram");
+        actionMap.put("exitProgram", new AbstractAction() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                dispose(); // Close the JFrame and exit the program
+            }
+        });
     }
+    
+    // Clear all entries in both tables
+    private void clearAllEntries() {
+        team1TableModel.setRowCount(0);
+        team2TableModel.setRowCount(0);
+    }
+    
     
     //METHOD TO PROMPT FOR EQUIPMENT CODE
     public void getEqID() {
@@ -83,6 +112,16 @@ public class Main extends JFrame {
     
     //Implement addPlayer method 
     public void addPlayer(int id_in, String user_in) {
+    	
+    	//check number current players
+    	int team1Count = team1TableModel.getRowCount();
+    	int team2Count = team2TableModel.getRowCount();
+    	
+    	//ensure #players < 15 per team
+    	if(team1Count >=15 || team2Count >= 15) {
+    		JOptionPane.showMessageDialog(null,  "This team is full!");
+    		return;
+    	}
 
     	//implement logic to search database
     	String DB_user = searchDatabase(id_in);
