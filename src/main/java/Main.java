@@ -204,7 +204,7 @@ public class Main extends JFrame {
     		Connection connection = DriverManager.getConnection(dbConnectionUrl);
     		
     		//statement to update username
-    		String sql = "UPDATE players SET username = ? WHERE id = ?'";
+    		String sql = "UPDATE players SET username = ? WHERE id = ?";
     		PreparedStatement preparedStatement = connection.prepareStatement(sql);
     		preparedStatement.setString(1,  username_enter);
     		preparedStatement.setInt(2,  id_enter);
