@@ -135,6 +135,7 @@ public class Main extends JFrame {
     				user_in = userInput;
     				//add new user to DB
     				updateDatabase(id_in, userInput);
+                    insertDatabase(id_in, userInput);
     				} else { //if improper user input
     					JOptionPane.showMessageDialog(null, "No username entered. Player not added."); //CHANGE TO WHILE LOOP
     					return;
@@ -160,7 +161,7 @@ public class Main extends JFrame {
     	
     	//prepare for next entry
     	idField.setText("");
-    	userField.setText("");
+    	//userField.setText("");
     }
     
     //FUNCTION TO PROMPT FOR EQUIPTMENT ID
@@ -220,6 +221,31 @@ public class Main extends JFrame {
     		//HANDLE DB CONNECTION ERRORS
     	}
     }
+
+    //insert DB method
+    private void insertDatabase(int id_enter, String username_enter) {
+        try {
+            //connect to DB
+            Connection connection = DriverManager.getConnection(dbConnectionUrl);
+
+            //statement to update username
+            String sql = "INSERT INTO players (username, id) VALUES (?, ?)";
+            PreparedStatement preparedStatement = connection.prepareStatement(sql);
+            preparedStatement.setString(1,  username_enter);
+            preparedStatement.setInt(2,  id_enter);
+
+            //execute
+            preparedStatement.executeUpdate();
+
+            //close
+            preparedStatement.close();
+            connection.close();
+        } catch (SQLException e) {
+            e.printStackTrace();
+            //HANDLE DB CONNECTION ERRORS
+        }
+    }
+
 
     //MAIN
     public static void main(String[] args) {
