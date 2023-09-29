@@ -126,21 +126,23 @@ public class Main extends JFrame {
 
     	//implement logic to search database
     	String DB_user = searchDatabase(id_in);
-    	
-    	if(DB_user != null) {
-    		user_in = DB_user; //if found, use username from database
-    	} else { //prompt to enter username
-    			String userInput = JOptionPane.showInputDialog("New user! Please enter a username: ");
-    			if (userInput != null && !userInput.isEmpty()) {
-    				user_in = userInput;
-    				//add new user to DB
-    				updateDatabase(id_in, userInput);
-                    insertDatabase(id_in, userInput);
-    				} else { //if improper user input
-    					JOptionPane.showMessageDialog(null, "No username entered. Player not added."); //CHANGE TO WHILE LOOP
-    					return;
-    				}	
-    			}
+
+        if(DB_user != null) {
+            user_in = DB_user; //if found, use username from database
+            System.out.println("User exists. Using " + user_in);
+        } else { //prompt to enter username
+            String userInput = JOptionPane.showInputDialog("New user! Please enter a username: ");
+            if (userInput != null && !userInput.isEmpty()) {
+                user_in = userInput;
+                System.out.println("User does not exist. Creating new user " + user_in);
+
+                //add new user to DB
+                insertDatabase(id_in, userInput);
+            } else { //if improper user input
+                JOptionPane.showMessageDialog(null, "No username entered. Player not added."); //CHANGE TO WHILE LOOP
+                return;
+            }
+        }
     	//get equipment ID
     	getEqID();
     	
@@ -233,6 +235,7 @@ public class Main extends JFrame {
             PreparedStatement preparedStatement = connection.prepareStatement(sql);
             preparedStatement.setString(1,  username_enter);
             preparedStatement.setInt(2,  id_enter);
+            System.out.println(preparedStatement);
 
             //execute
             preparedStatement.executeUpdate();
