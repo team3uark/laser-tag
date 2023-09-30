@@ -24,3 +24,10 @@ java -cp target/laserTag-1.0-SNAPSHOT.jar Main
 3. You will see the equipment ids on the screen of UdpServer.java
 
 -----------------------------
+### Github names of team 3
+| Real Name | Github Name |
+| --- | ----------- |
+| Norah Rogers | nojrogers |
+| Blake Tilton | blaketilton |
+| Craig Yetter | crayetter |
+| Jisu Kim | mongtee |
