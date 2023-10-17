@@ -92,8 +92,8 @@ public class Main extends JFrame {
         actionMap.put("exitProgram", new AbstractAction() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                GameStartCountdown sCountdwon = new GameStartCountdown();
-                sCountdwon.createStartCounddown();
+                GameStartCountdown startCountdwon = new GameStartCountdown();
+                startCountdwon.createStartCountdown();
                 dispose(); // Close the JFrame and exit the program
             }
         });
