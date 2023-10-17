@@ -26,7 +26,7 @@ public class GameStartCountdown {
         textLabel.setFont(new Font("Arial", Font.BOLD, 50));
         frame.add(textLabel, gbc);
 
-        countdownLabel = new JLabel("5", SwingConstants.CENTER); // Set initial value to 5
+        countdownLabel = new JLabel("", SwingConstants.CENTER);
         countdownLabel.setFont(new Font("Arial", Font.BOLD, 70));
         gbc.gridy = 1;
         frame.add(countdownLabel, gbc);
@@ -49,7 +49,7 @@ public class GameStartCountdown {
                 } else {
                     ((Timer) e.getSource()).stop();
                     countdownLabel.setText("Start!");
-                    //remove "Game will start in"
+                    //remove displaying "Game will start in"
                     frame.remove(textLabel);
                     frame.revalidate();
                     frame.repaint();
