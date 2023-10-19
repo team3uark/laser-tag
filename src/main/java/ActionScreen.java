@@ -16,10 +16,6 @@ public class ActionScreen extends JFrame{
     JTable team1Table;
     JTable team2Table;
 
-
-    JPanel timerPanel;
-    JPanel actionPanel;
-    JLabel team1Name, team2Name;
     JLabel team1Players[], team2Players[];
     int team1Score = 0;
     int team2Score = 0;
