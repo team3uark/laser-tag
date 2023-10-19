@@ -3,7 +3,7 @@ import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
-public class SplashScreenNew {
+public class SplashScreen {
 //    public static void main(String[] args) {
 //        //sample test to check it works
 //        SwingUtilities.invokeLater(() -> {
