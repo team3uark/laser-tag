@@ -46,14 +46,21 @@ public class GameStartCountdown {
                 if (counter > 1) {
                     countdownLabel.setText(String.valueOf(counter));
                     counter--;
+                } else if (counter == 1) {
+                    countdownLabel.setText("1");
+                    counter--;
                 } else {
                     ((Timer) e.getSource()).stop();
+                    textLabel.setVisible(false);
                     countdownLabel.setText("Start!");
-                    //remove displaying "Game will start in"
-                    frame.remove(textLabel);
-                    frame.revalidate();
-                    frame.repaint();
-                    frame.dispose();
+                    Timer delayTimer = new Timer(700, new ActionListener() {
+                        @Override
+                        public void actionPerformed(ActionEvent e) {
+                            frame.dispose();
+                        }
+                    });
+                    delayTimer.setRepeats(false);
+                    delayTimer.start();
                 }
             }
         });
