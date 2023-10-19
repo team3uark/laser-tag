@@ -53,6 +53,7 @@ public class GameStartCountdown {
                     frame.remove(textLabel);
                     frame.revalidate();
                     frame.repaint();
+                    frame.dispose();
                 }
             }
         });
