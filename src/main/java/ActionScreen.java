@@ -27,7 +27,7 @@ public class ActionScreen extends JFrame{
     ActionScreen(){
         this.setTitle("Action Screen");
         this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        this.setSize(1000,1000);
+        this.setSize(1000,700);
         //Vector<Player> players = new Vector<Player>();
 
 
