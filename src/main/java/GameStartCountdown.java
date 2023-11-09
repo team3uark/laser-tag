@@ -7,9 +7,9 @@ public class GameStartCountdown {
     private static JLabel countdownLabel;
     private static JLabel textLabel;
 
-    public static void main(String[] args) {
-        SwingUtilities.invokeLater(GameStartCountdown::createStartCountdown);
-    }
+//    public static void main(String[] args) {
+//        SwingUtilities.invokeLater(GameStartCountdown::createStartCountdown);
+//    }
 
     public static void createStartCountdown() {
         JFrame frame = new JFrame("Game Start Countdown");
@@ -54,9 +54,12 @@ public class GameStartCountdown {
                     textLabel.setVisible(false);
                     countdownLabel.setText("Start!");
                     Timer delayTimer = new Timer(700, new ActionListener() {
-                        @Override
+                        @Override   
                         public void actionPerformed(ActionEvent e) {
                             frame.dispose();
+                            //when the timer finishes, transmit code 202
+                            UdpClient udpClient = new UdpClient();
+                            udpClient.sendDataToServer(202);
                         }
                     });
                     delayTimer.setRepeats(false);
