@@ -12,9 +12,9 @@ public class UdpClient {
             socket.setBroadcast(true);
 
             // Broadcast address
-            InetAddress broadcastAddress = InetAddress.getLocalHost();
-            // I am not sure if we need a specific address
-            //InetAddress broadcastAddress = InetAddress.getByName("192.168.1.100");
+            //InetAddress broadcastAddress = InetAddress.getLocalHost();
+            // use the address of traffic generator to broadcast
+            InetAddress broadcastAddress = InetAddress.getByName("127.0.0.1");
             int serverPort = 7501;
 
             String equipment = "Equipment ID: " + eCode;
