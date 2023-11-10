@@ -93,8 +93,6 @@ public class Main extends JFrame {
             @Override
             public void actionPerformed(ActionEvent e) {
                 ActionScreen action = new ActionScreen();
-                action.setVisible(true);
-                action.setLocationRelativeTo(null);
                 action.addPlayers(players);
                 GameStartCountdown startCountdown = new GameStartCountdown();
                 startCountdown.createStartCountdown();
