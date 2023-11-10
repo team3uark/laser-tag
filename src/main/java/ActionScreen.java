@@ -16,8 +16,6 @@ public class ActionScreen extends JFrame{
     JTable team1Table;
     JTable team2Table;
 
-    Thread musicThread = new Thread(new AsyncMusicPlayer());
-
     JLabel team1Players[], team2Players[];
     int team1Score = 0;
     int team2Score = 0;
@@ -25,6 +23,13 @@ public class ActionScreen extends JFrame{
     JLabel actionLabel = new JLabel("Play by Play Action Here");
     JLabel scoresLabel = new JLabel("Team 1 Score: " + team1Score + " | Team 2 Score: " + team2Score);
 
+    //music player
+    Thread musicThread = new Thread(new AsyncMusicPlayer());
+
+    //countdown timer
+    JLabel countdownLabel;
+    private int remainingSeconds = 6 * 60;
+    private Timer timer;
 
     ActionScreen(){
         this.setTitle("Action Screen");
@@ -46,6 +51,8 @@ public class ActionScreen extends JFrame{
         team2TableModel.addColumn("Score");
         team2Table = new JTable(team2TableModel);
 
+        JPanel topPanel = new JPanel(new BorderLayout());
+
         JPanel teamScores = new JPanel();
         teamScores.setPreferredSize(new Dimension(100,100));
         //JLabel scoresLabel = new JLabel("Team 1 Score: " + team1Score + " | Team 2 Score: " + team2Score);
@@ -59,12 +66,20 @@ public class ActionScreen extends JFrame{
         actionPanel.add(actionLabel);
 
         //-----------------------------------------------
-        this.add(teamScores, BorderLayout.NORTH);
+        topPanel.add(teamScores, BorderLayout.NORTH);
         this.add(splitPane, BorderLayout.CENTER);
         this.add(actionPanel, BorderLayout.PAGE_END);
 
         //play the random music mp3 file
         musicThread.start();
+
+        // add 6minute timer
+        JPanel countdownPanel = new JPanel(new FlowLayout(FlowLayout.RIGHT));
+        countdownLabel = new JLabel(formatTime(remainingSeconds));
+        countdownPanel.add(countdownLabel);
+        topPanel.add(countdownPanel, BorderLayout.EAST);
+        this.add(topPanel, BorderLayout.NORTH);
+        startTimer();
     }
 
     void addPlayers(Vector<Player> players){
@@ -102,6 +117,30 @@ public class ActionScreen extends JFrame{
     void incrementPlayerScore(Player player)
     {
         player.incrementScore();
+    }
+
+    private void startTimer() {
+        timer = new Timer(1000, e -> {
+            if (remainingSeconds > 0) {
+                remainingSeconds--;
+                countdownLabel.setText(formatTime(remainingSeconds));
+            } else {
+                stopTimer();
+            }
+        });
+        timer.start();
+    }
+
+    private void stopTimer() {
+        if (timer != null) {
+            timer.stop();
+        }
+    }
+
+    private String formatTime(int seconds) {
+        int min = seconds / 60;
+        int sec = seconds % 60;
+        return String.format("%02d:%02d", min, sec);
     }
 
 }
