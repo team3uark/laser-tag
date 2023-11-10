@@ -16,6 +16,8 @@ public class ActionScreen extends JFrame{
     JTable team1Table;
     JTable team2Table;
 
+    Thread musicThread = new Thread(new AsyncMusicPlayer());
+
     JLabel team1Players[], team2Players[];
     int team1Score = 0;
     int team2Score = 0;
@@ -61,6 +63,8 @@ public class ActionScreen extends JFrame{
         this.add(splitPane, BorderLayout.CENTER);
         this.add(actionPanel, BorderLayout.PAGE_END);
 
+        //play the random music mp3 file
+        musicThread.start();
     }
 
     void addPlayers(Vector<Player> players){
