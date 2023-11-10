@@ -134,6 +134,10 @@ public class ActionScreen extends JFrame{
     private void stopTimer() {
         if (timer != null) {
             timer.stop();
+            UdpClient udpClient = new UdpClient();
+            for(int i = 0; i < 3; i++) {
+                udpClient.sendDataToServer(221);
+            }
         }
     }
 
