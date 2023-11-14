@@ -17,7 +17,7 @@ public class Main extends JFrame {
     private DefaultTableModel team1TableModel;
     private JTable team2Table;
     private DefaultTableModel team2TableModel;
-    UdpClient cl = new UdpClient();
+    UdpClient client = new UdpClient();
     String dbConnectionUrl = "jdbc:postgresql://db.jftodibnhiuinhcketaf.supabase.co/postgres?user=postgres&password=jd4_2kAmcde3451&ssl=false";
     Vector<Player> players = new Vector<Player>();
     public Main() {
@@ -94,8 +94,6 @@ public class Main extends JFrame {
             public void actionPerformed(ActionEvent e) {
                 ActionScreen action = new ActionScreen();
                 action.addPlayers(players);
-                GameStartCountdown startCountdown = new GameStartCountdown();
-                startCountdown.createStartCountdown();
                 dispose(); // Close the JFrame and exit the program
             }
         });
@@ -112,7 +110,7 @@ public class Main extends JFrame {
     public int getEqID() {
         String eqId = JOptionPane.showInputDialog("Enter your equipment ID");
         int eqIdInt = Integer.parseInt(eqId);
-        cl.sendDataToServer(eqIdInt);
+        client.sendDataToServer(eqIdInt);
         return eqIdInt;
 
     }
@@ -270,8 +268,8 @@ public class Main extends JFrame {
         SwingUtilities.invokeLater(new Runnable() {
             public void run() {
                 new Main().setVisible(true);
-                SplashScreen sp = new SplashScreen();
-                sp.showSplashScreen();
+                SplashScreen splash = new SplashScreen();
+                splash.showSplashScreen();
             }
         });
     }
