@@ -17,7 +17,7 @@ public class UdpClient {
             InetAddress broadcastAddress = InetAddress.getByName("127.0.0.1");
             int serverPort = 7501;
 
-            String equipment = "Code: " + eCode;
+            String equipment = String.valueOf(eCode);
 
             byte[] sendData = equipment.getBytes();
 
