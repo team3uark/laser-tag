@@ -22,6 +22,8 @@ public class ActionScreen extends JFrame{
     Vector<Player> players = new Vector<Player>();
     JLabel actionLabel = new JLabel("Play by Play Action Here");
     JLabel scoresLabel = new JLabel("Team 1 Score: " + team1Score + " | Team 2 Score: " + team2Score);
+    
+    JButton backButton = new JButton("Back to Player Entry");
 
     //music player
     Thread musicThread = new Thread(new AsyncMusicPlayer());
@@ -49,6 +51,33 @@ public class ActionScreen extends JFrame{
         team2TableModel.addColumn("Username");
         team2TableModel.addColumn("Score");
         team2Table = new JTable(team2TableModel);
+        
+        JPanel topPanel = new JPanel(new BorderLayout());
+        JPanel buttonPanel = new JPanel();
+        
+        backButton = new JButton("Back to Player Entry");
+        backButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                // Clear the tables and reset scores when going back to player entry
+                team1TableModel.setRowCount(0);
+                team2TableModel.setRowCount(0);
+                team1Score = 0;
+                team2Score = 0;
+                scoresLabel.setText("Team 1 Score: " + team1Score + " | Team 2 Score: " + team2Score);
+
+                //show player entry screen
+                Main entryScreen = new Main();
+                entryScreen.setVisible(true);
+                
+                dispose();
+            }
+        });
+        
+        buttonPanel.add(backButton);
+        topPanel.add(buttonPanel, BorderLayout.SOUTH);
+       
+        
     }
 
     public void createStartCountdown() {
@@ -112,43 +141,47 @@ public class ActionScreen extends JFrame{
         timer.start();
     }
 
+ // Method to create ActionScreen
     void createActionScreen() {
         this.setTitle("Action Screen");
         this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        this.setSize(1000,700);
+        this.setSize(1000, 700);
         this.setVisible(true);
         this.setLocationRelativeTo(null);
+
         JPanel topPanel = new JPanel(new BorderLayout());
 
         JPanel teamScores = new JPanel();
-        teamScores.setPreferredSize(new Dimension(100,100));
-        //JLabel scoresLabel = new JLabel("Team 1 Score: " + team1Score + " | Team 2 Score: " + team2Score);
+        teamScores.setPreferredSize(new Dimension(100, 100));
         teamScores.add(scoresLabel);
 
-        //-----------------------------------------------
         JSplitPane splitPane = new JSplitPane(JSplitPane.HORIZONTAL_SPLIT, new JScrollPane(team1Table), new JScrollPane(team2Table));
-        //-----------------------------------------------
+
         JPanel actionPanel = new JPanel();
-        actionPanel.setPreferredSize(new Dimension(200,200));
+        actionPanel.setPreferredSize(new Dimension(200, 200));
         actionPanel.add(actionLabel);
 
-        //-----------------------------------------------
         topPanel.add(teamScores, BorderLayout.NORTH);
         this.add(splitPane, BorderLayout.CENTER);
         this.add(actionPanel, BorderLayout.PAGE_END);
 
-        //play the random music mp3 file
+        // Add the "Back to Player Entry" button to the button panel
+        JPanel buttonPanel = new JPanel();
+        buttonPanel.add(backButton);
+        topPanel.add(buttonPanel, BorderLayout.SOUTH);
+
+        // Play the random music mp3 file
         musicThread.start();
 
-        // add 6minute timer
+        // Add 6-minute timer
         JPanel countdownPanel = new JPanel(new FlowLayout(FlowLayout.RIGHT));
         countdownLabel = new JLabel(formatTime(remainingSeconds));
         countdownPanel.add(countdownLabel);
         topPanel.add(countdownPanel, BorderLayout.EAST);
         this.add(topPanel, BorderLayout.NORTH);
         startTimer();
-
     }
+
 
     void addPlayers(Vector<Player> players){
         for (int i = 0; i < players.size(); i++)
@@ -204,10 +237,9 @@ public class ActionScreen extends JFrame{
             timer.stop();
             musicThread.stop();
             UdpClient udpClient = new UdpClient();
-            for(int i = 0; i < 3; i++) {
+            for (int i = 0; i < 3; i++) {
                 udpClient.sendDataToServer(221);
-            }
-        }
+            }}
     }
 
     private String formatTime(int seconds) {
@@ -217,3 +249,4 @@ public class ActionScreen extends JFrame{
     }
 
 }
+
