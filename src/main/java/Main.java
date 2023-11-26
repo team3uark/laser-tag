@@ -18,6 +18,8 @@ public class Main extends JFrame {
     private JTable team2Table;
     private DefaultTableModel team2TableModel;
     UdpClient client = new UdpClient();
+
+    UdpServer server = new UdpServer();
     String dbConnectionUrl = "jdbc:postgresql://db.jftodibnhiuinhcketaf.supabase.co/postgres?user=postgres&password=jd4_2kAmcde3451&ssl=false";
     Vector<Player> players = new Vector<Player>();
     public Main() {
@@ -25,7 +27,7 @@ public class Main extends JFrame {
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         setSize(1000, 700);
 
-        //set up main panel 
+        //set up main panel
         JPanel mainPanel = new JPanel(new BorderLayout());
 
         //set up entry panel
@@ -93,7 +95,22 @@ public class Main extends JFrame {
             @Override
             public void actionPerformed(ActionEvent e) {
                 ActionScreen action = new ActionScreen();
+
                 action.addPlayers(players);
+                action.incrementPlayerScore(1);
+                action.addToFeed(1,2);
+                action.incrementPlayerScore(1);
+                action.addToFeed(1,2);
+                action.incrementPlayerScore(2);
+                action.addToFeed(2,3);
+                action.incrementPlayerScore(3);
+                action.incrementPlayerScore(3);
+                action.incrementPlayerScore(4);
+                action.incrementPlayerScore(4);
+                action.scoreOnBase(2);
+
+                action.addPlayers(players);
+
                 dispose(); // Close the JFrame and exit the program
             }
         });
