@@ -9,6 +9,9 @@ class Player {
     private int score;
     private int equipmentID;
 
+    private String hitBaseIndicator;
+    private boolean hitBase;
+
     private int playerID;
 
     public Player(String name, int playerID, int equipmentID, int score) {
@@ -16,6 +19,8 @@ class Player {
         this.playerID = playerID;
         this.equipmentID = equipmentID;
         this.score = score;
+        this.hitBase = false;
+        this.hitBaseIndicator = "";
     }
 
     public String getName() {
@@ -38,9 +43,30 @@ class Player {
         score += 10;
     }
 
+    public void incrementScoreBaseHit(){ score += 100; }
+
     public void setEquipmentID(int equipmentID)
     {
         this.equipmentID = equipmentID;
+    }
+
+    public void setHitBase(int equipmentID)
+    {
+        if(hitBase == false)
+        {
+            hitBase = true;
+            hitBaseIndicator = "ℬ";
+        }
+    }
+
+    public String getHitBaseIndicator()
+    {
+        return this.hitBaseIndicator;
+    }
+
+    public boolean getHitBase()
+    {
+        return this.hitBase;
     }
 
     @Override
