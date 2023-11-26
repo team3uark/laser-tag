@@ -4,6 +4,8 @@ import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.Vector;
+import java.util.Comparator;
+import java.util.Collections;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.PreparedStatement;
@@ -21,11 +23,12 @@ public class ActionScreen extends JFrame{
     int team2Score = 0;
     Vector<Player> players = new Vector<Player>();
     JLabel actionLabel = new JLabel("Play by Play Action Here");
-    JLabel scoresLabel = new JLabel("Team 1 Score: " + team1Score + " | Team 2 Score: " + team2Score);
-    
+    private JTextArea killFeed = new JTextArea();
+    JLabel team1ScoreLabel = new JLabel("Team 1 Score: " + team1Score);
+    JLabel team2ScoreLabel = new JLabel("Team 2 Score: " + team2Score);
+
     JButton backButton = new JButton("Back to Player Entry");
 
-    //music player
     Thread musicThread = new Thread(new AsyncMusicPlayer());
 
     //countdown timer
@@ -33,7 +36,7 @@ public class ActionScreen extends JFrame{
     private int remainingSeconds = 6 * 60;
     private Timer timer;
 
-    //game start countdown timer
+
     private static JLabel startCountdownLabel;
     private static JLabel textLabel;
 
@@ -42,19 +45,22 @@ public class ActionScreen extends JFrame{
         createStartCountdown();
         //Vector<Player> players = new Vector<Player>();
         team1TableModel = new DefaultTableModel();
+        team1TableModel.addColumn("Base");
         team1TableModel.addColumn("Username");
         team1TableModel.addColumn("Score");
         team1Table = new JTable(team1TableModel);
 
         //-----------------------------------------------
         team2TableModel = new DefaultTableModel();
+        team2TableModel.addColumn("Base");
         team2TableModel.addColumn("Username");
         team2TableModel.addColumn("Score");
         team2Table = new JTable(team2TableModel);
-        
+
+
         JPanel topPanel = new JPanel(new BorderLayout());
         JPanel buttonPanel = new JPanel();
-        
+
         backButton = new JButton("Back to Player Entry");
         backButton.addActionListener(new ActionListener() {
             @Override
@@ -64,20 +70,20 @@ public class ActionScreen extends JFrame{
                 team2TableModel.setRowCount(0);
                 team1Score = 0;
                 team2Score = 0;
-                scoresLabel.setText("Team 1 Score: " + team1Score + " | Team 2 Score: " + team2Score);
-
+                //scoresLabel.setText("Team 1 Score: " + team1Score + " | Team 2 Score: " + team2Score);
+                musicThread.stop();
                 //show player entry screen
                 Main entryScreen = new Main();
                 entryScreen.setVisible(true);
-                
+
                 dispose();
             }
         });
-        
+
         buttonPanel.add(backButton);
         topPanel.add(buttonPanel, BorderLayout.SOUTH);
-       
-        
+
+
     }
 
     public void createStartCountdown() {
@@ -112,7 +118,14 @@ public class ActionScreen extends JFrame{
 
             @Override
             public void actionPerformed(ActionEvent e) {
-                if (counter > 1) {
+                if (counter > 17) {
+                    startCountdownLabel.setText(String.valueOf(counter));
+                    counter--;
+                } else if( counter == 17)  {
+                    musicThread.start();
+                    startCountdownLabel.setText(String.valueOf(counter));
+                    counter--;
+                } else if ( counter < 17 && counter > 1) {
                     startCountdownLabel.setText(String.valueOf(counter));
                     counter--;
                 } else if (counter == 1) {
@@ -141,7 +154,7 @@ public class ActionScreen extends JFrame{
         timer.start();
     }
 
- // Method to create ActionScreen
+    // Method to create ActionScreen
     void createActionScreen() {
         this.setTitle("Action Screen");
         this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -153,13 +166,22 @@ public class ActionScreen extends JFrame{
 
         JPanel teamScores = new JPanel();
         teamScores.setPreferredSize(new Dimension(100, 100));
-        teamScores.add(scoresLabel);
+        //team1ScoreLabel
+        teamScores.add(team1ScoreLabel);
+        teamScores.add(team2ScoreLabel);
 
         JSplitPane splitPane = new JSplitPane(JSplitPane.HORIZONTAL_SPLIT, new JScrollPane(team1Table), new JScrollPane(team2Table));
 
+        //  killFeed = new JTextArea();
+        killFeed.setEditable(false);
+        //killFeed.setBackground(Color.GRAY);
         JPanel actionPanel = new JPanel();
         actionPanel.setPreferredSize(new Dimension(200, 200));
-        actionPanel.add(actionLabel);
+        actionPanel.add(killFeed);
+        killFeed.insert("Play by Play Action Here\n", 0);
+        killFeed.setCaretPosition(0);
+
+
 
         topPanel.add(teamScores, BorderLayout.NORTH);
         this.add(splitPane, BorderLayout.CENTER);
@@ -171,7 +193,7 @@ public class ActionScreen extends JFrame{
         topPanel.add(buttonPanel, BorderLayout.SOUTH);
 
         // Play the random music mp3 file
-        musicThread.start();
+        // musicThread.start();
 
         // Add 6-minute timer
         JPanel countdownPanel = new JPanel(new FlowLayout(FlowLayout.RIGHT));
@@ -180,21 +202,40 @@ public class ActionScreen extends JFrame{
         topPanel.add(countdownPanel, BorderLayout.EAST);
         this.add(topPanel, BorderLayout.NORTH);
         startTimer();
+
     }
 
-
     void addPlayers(Vector<Player> players){
+        team1TableModel.setRowCount(0);
+        team2TableModel.setRowCount(0);
+
+        int high = players.size() - 1;
+        for(int count = 0; count < high; count++)
+        {
+            for(int i = 0; i < high; i++)
+            {
+                if(players.get(i).getScore() < players.get(i + 1).getScore())
+                {
+                    Player temp = players.get(i);
+                    players.set(i, players.get(i + 1));
+                    players.set(i + 1, temp);
+                }
+            }
+        }
+
         for (int i = 0; i < players.size(); i++)
         {
             //Vector<Player> players = new Vector<Player>()
             this.players.add(players.get(i));
             if (players.get(i).getPlayerID() % 2 == 0)
             {
-                team1TableModel.addRow(new Object[]{players.get(i).getName(), players.get(i).getScore()});
+                team1TableModel.addRow(new Object[]{players.get(i).getHitBaseIndicator(), players.get(i).getName(), players.get(i).getScore()});
             }
-            else {
-                team2TableModel.addRow(new Object[]{players.get(i).getName(), players.get(i).getScore()});
+            else
+            {
+                team2TableModel.addRow(new Object[]{players.get(i).getHitBaseIndicator(), players.get(i).getName(), players.get(i).getScore()});
             }
+
         }
     }
 
@@ -202,22 +243,55 @@ public class ActionScreen extends JFrame{
         if (teamNumber == 1)
         {
             team1Score += 10;
+            team1ScoreLabel.setText("Team 1 Score: " + team1Score);
 
         }
         else if (teamNumber == 2)
         {
             team2Score += 10;
+            team2ScoreLabel.setText("Team 2 Score: " + team2Score);
         }
         else {
             return;
         }
-        this.scoresLabel.setText("Team 1 Score: " + team1Score + " | Team 2 Score: " + team2Score);
 
     }
 
-    void incrementPlayerScore(Player player)
+    void incrementTeamScoreBaseHit(int teamNumber){
+        if (teamNumber == 1)
+        {
+            team1Score += 100;
+            team1ScoreLabel.setText("Team 1 Score: " + team1Score);
+
+        }
+        else if (teamNumber == 2)
+        {
+            team2Score += 100;
+            team2ScoreLabel.setText("Team 2 Score: " + team2Score);
+        }
+        else {
+            return;
+        }
+
+    }
+
+    void incrementPlayerScore(int eq_id)
     {
-        player.incrementScore();
+        for(int i = 0; i < players.size(); i++)
+        {
+            if(players.get(i).getEquipmentID() == eq_id)
+            {
+                players.get(i).incrementScore();
+                if(players.get(i).getPlayerID() % 2 == 0)
+                {
+                    incrementTeamScore(1);
+                }
+                else
+                {
+                    incrementTeamScore(2);
+                }
+            }
+        }
     }
 
     private void startTimer() {
@@ -248,5 +322,75 @@ public class ActionScreen extends JFrame{
         return String.format("%02d:%02d", min, sec);
     }
 
-}
 
+    public void paintComponent(Graphics g)
+    {
+        addPlayers(players);
+    }
+
+    /*
+    public void flashingScore()
+    {
+        int flashingCounter = 20;
+        while(team1Score > team2Score)
+        {
+            while(flashingCounter > 10) {
+                team1ScoreLabel.setVisible(false);
+                flashingCounter--;
+            }
+            while(flashingCounter <= 10 && flashingCounter > 0)
+            {
+                team1ScoreLabel.setVisible(true);
+                flashingCounter--;
+            }
+            flashingCounter = 20;
+        }
+        if(team2Score > team1Score)
+        {
+
+        }
+    }
+    */
+
+    public void scoreOnBase(int eq_id)
+    {
+        for(int i = 0; i < players.size(); i++)
+        {
+            if(players.get(i).getEquipmentID() == eq_id && players.get(i).getHitBase() == false)
+            {
+                players.get(i).incrementScoreBaseHit();
+                players.get(i).setHitBase(eq_id);
+                if(players.get(i).getPlayerID() % 2 == 0)
+                {
+                    incrementTeamScoreBaseHit(1);
+                }
+                else
+                {
+                    incrementTeamScoreBaseHit(2);
+                }
+            }
+        }
+    }
+
+    public void addToFeed(int eq_id_1, int eq_id_2)
+    {
+        String feed_message = "";
+        for(int i = 0; i < players.size(); i++)
+        {
+            if(eq_id_1 == players.get(i).getEquipmentID())
+            {
+                feed_message = feed_message + players.get(i).getName() + " Shot ";
+
+            }
+            if(eq_id_2 == players.get(i).getEquipmentID())
+            {
+                feed_message = feed_message + players.get(i).getName();
+            }
+        }
+        killFeed.insert(feed_message + "\n", 0);
+        killFeed.setCaretPosition(0);
+
+
+    }
+
+}
