@@ -114,7 +114,7 @@ public class ActionScreen extends JFrame{
 
     public void startCountdown(JFrame frame) {
         Timer timer = new Timer(1000, new ActionListener() {
-            int counter = 3; // starting from 30 seconds
+            int counter = 30; // starting from 30 seconds
 
             @Override
             public void actionPerformed(ActionEvent e) {
