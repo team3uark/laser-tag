@@ -100,14 +100,19 @@ public class Main extends JFrame {
                 action.incrementPlayerScore(1);
                 action.addToFeed(1,2);
                 action.incrementPlayerScore(1);
-                action.addToFeed(1,2);
+                action.addToFeed(1,4);
                 action.incrementPlayerScore(2);
                 action.addToFeed(2,3);
                 action.incrementPlayerScore(3);
+                action.addToFeed(3,2);
                 action.incrementPlayerScore(3);
+                action.addToFeed(3,4);
                 action.incrementPlayerScore(4);
+                action.addToFeed(4,3);
                 action.incrementPlayerScore(4);
-                action.scoreOnBase(2);
+                action.addToFeed(4,1);
+                action.scoreOnBase(4);
+                action.addToFeed(4,99999);
 
                 action.addPlayers(players);
 
