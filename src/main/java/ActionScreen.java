@@ -22,7 +22,7 @@ public class ActionScreen extends JFrame{
     int team1Score = 0;
     int team2Score = 0;
     Vector<Player> players = new Vector<Player>();
-    JLabel actionLabel = new JLabel("Play by Play Action Here");
+
     private JTextArea killFeed = new JTextArea();
     JLabel team1ScoreLabel = new JLabel("Team 1 Score: " + team1Score);
     JLabel team2ScoreLabel = new JLabel("Team 2 Score: " + team2Score);
@@ -114,7 +114,7 @@ public class ActionScreen extends JFrame{
 
     public void startCountdown(JFrame frame) {
         Timer timer = new Timer(1000, new ActionListener() {
-            int counter = 30; // starting from 30 seconds
+            int counter = 3; // starting from 30 seconds
 
             @Override
             public void actionPerformed(ActionEvent e) {
@@ -178,7 +178,7 @@ public class ActionScreen extends JFrame{
         JPanel actionPanel = new JPanel();
         actionPanel.setPreferredSize(new Dimension(200, 200));
         actionPanel.add(killFeed);
-        killFeed.insert("Play by Play Action Here\n", 0);
+        //killFeed.insert("Play by Play Action Here\n", 0);
         killFeed.setCaretPosition(0);
 
 
@@ -375,18 +375,25 @@ public class ActionScreen extends JFrame{
     public void addToFeed(int eq_id_1, int eq_id_2)
     {
         String feed_message = "";
+        String shot_player = "";
+        String scoring_player = "";
         for(int i = 0; i < players.size(); i++)
         {
             if(eq_id_1 == players.get(i).getEquipmentID())
             {
-                feed_message = feed_message + players.get(i).getName() + " Shot ";
-
+                scoring_player = players.get(i).getName();
             }
             if(eq_id_2 == players.get(i).getEquipmentID())
             {
-                feed_message = feed_message + players.get(i).getName();
+                shot_player = players.get(i).getName() + " | +10 Points";
+            }
+            if(eq_id_2 == 99999)
+            {
+                shot_player = "Enemy Base | +100 Points";
             }
         }
+
+        feed_message = scoring_player + " shot " + shot_player;
         killFeed.insert(feed_message + "\n", 0);
         killFeed.setCaretPosition(0);
 
